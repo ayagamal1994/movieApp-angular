@@ -1,0 +1,47 @@
+.movies-list {
+    .search {
+        background-color: #F3F1F1;
+        padding: 35px;
+        h3 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+        p {
+            font-size: 14px;
+        }
+        .search-form {
+            input {
+                width: calc(100% - 120px);
+                padding: 10px;
+                border: none;
+                border-radius: 10px;
+            }
+            button {
+                width: fit-content;
+                padding: 10px 20px;
+                background-color: #FFE353;
+                border: none;
+                border-radius: 10px;
+            }
+            input:focus{
+                outline: none;
+            }
+        }
+    }
+    .movies-list__card {
+        h3 {
+            font-size: 15px;
+            font-weight: bold;
+            margin: 10px 0 5px 0;
+        }
+        p {
+            font-size: 14px;
+            color: #7f7f7f;
+            margin: 0;
+        }
+        img {
+            width:20px
+        }
+    }
+}

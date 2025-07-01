@@ -33,6 +33,16 @@ export const moviesListStore = signalStore(
           console.log('Movies from TMDb:', res.results);
         });
       },
+
+      searchMovies: (query: string) => {
+        const API_KEY = '2c2bef9d99b73c2a458dd29141f940d1';
+        const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}`;
+        http.get<any>(url).subscribe((res) => {
+          patchState(state, { movies: res.results });
+          console.log("gfg",res.results)
+        });
+        
+      }
     };
   })
 );

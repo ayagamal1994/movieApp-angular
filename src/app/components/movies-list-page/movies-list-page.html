@@ -1,14 +1,23 @@
 <section class="movies-list">
     <div class="container">
+        <div class="search rounded-1 mb-4">
+            <h3>Welcome to our movie app</h3>
+            <p>Millions of movies, TV shows and people to discover. Explore now.</p>
+            <div class="search-form d-flex justify-content-between align-items-center">
+                <input type="text" placeholder="search and explore.." [(ngModel)] = "searchTerm">
+                <button (click)="search()">search</button>
+            </div>
+        </div>
+
         <div class="row">
         @for(movie of moviesListStore.movies(); track movie.id){
             
             <div class="col-lg-2 col-md-4 col-sm-12 mb-3">
-                <div class="movies-list__card">
+                <div class="movies-list__card mb-3">
                     <div class="card-img">
                         <img class="w-100 rounded-2" [src]="'https://image.tmdb.org/t/p/w500/' + movie.poster_path">
                     </div>
-                    <div class="">
+                    <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h3>{{movie.title}}</h3>
                             <p>{{movie.release_date}}</p>
