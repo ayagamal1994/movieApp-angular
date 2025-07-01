@@ -1,0 +1,31 @@
+<section class="movies-list">
+    <div class="container">
+        <div class="row">
+        @for(movie of moviesListStore.movies(); track movie.id){
+            
+            <div class="col-lg-2 col-md-4 col-sm-12 mb-3">
+                <div class="movies-list__card">
+                    <div class="card-img">
+                        <img class="w-100 rounded-2" [src]="'https://image.tmdb.org/t/p/w500/' + movie.poster_path">
+                    </div>
+                    <div class="">
+                        <div>
+                            <h3>{{movie.title}}</h3>
+                            <p>{{movie.release_date}}</p>
+                        </div>
+                        <div>
+                            <img
+                                class=""
+                                [src]="wishlistStore.isInWishlist(movie.id) ? './heart-filled.png' : './heart-empty.png'"
+                                (click)="toggleWishlist(movie)"
+                                alt="wishlist icon"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        }
+        </div>
+    </div>
+</section>
