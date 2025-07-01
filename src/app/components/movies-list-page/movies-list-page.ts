@@ -3,15 +3,26 @@ import { moviesListStore } from '../../stores/moviesListStore';
 import { wishlistStore } from '../../stores/wishlistStore';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-movies-list-page',
-  imports: [FormsModule],
+  imports: [FormsModule, NgbPaginationModule],
   templateUrl: './movies-list-page.html',
   styleUrl: './movies-list-page.scss'
 })
 export class MoviesListPage {
+  //pagination
+  page = 1;
+  ngOnInit() {
+  this.page = this.moviesListStore.currentPage(); 
+  this.moviesListStore.loadNowPlaying(this.page); 
+}
 
+onPageChange(page: number) {
+  this.page = page;
+  this.moviesListStore.loadNowPlaying(page);
+}
   //search
   router = inject(Router)
   searchTerm = "";

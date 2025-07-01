@@ -11,3 +11,14 @@ body {
     margin: 0;
     box-sizing: border-box;
 }
+
+.page-item.active .page-link {
+    background-color: #FFE353 !important; 
+    border-color: #FFE353 !important;
+    color: #000 !important;
+    border: none !important;
+}
+.page-item .page-link {
+    color: #000 !important;
+    border: none !important
+}

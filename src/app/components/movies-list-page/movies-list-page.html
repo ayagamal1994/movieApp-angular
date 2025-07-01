@@ -36,5 +36,9 @@
             
         }
         </div>
+
+        <ngb-pagination [(page)]="page" [pageSize]="1" [collectionSize]="moviesListStore.totalPages()"  [maxSize]="5"  (pageChange)="onPageChange($event)"
+            aria-label="Default pagination" class="d-flex justify-content-center mt-4">
+        </ngb-pagination>
     </div>
 </section>

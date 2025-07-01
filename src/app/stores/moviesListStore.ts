@@ -1,47 +1,60 @@
 import { HttpClient } from "@angular/common/http";
 import { inject } from "@angular/core";
-import { patchState, signalStore, withMethods, withState } from "@ngrx/signals";
+import {
+  patchState,
+  signalStore,
+  withMethods,
+  withState
+} from "@ngrx/signals";
 
 interface movie {
-  id: number,
-  poster_path: string,
-  title: string,
-  release_date: string
-
+  id: number;
+  poster_path: string;
+  title: string;
+  release_date: string;
 }
 
 export const moviesListStore = signalStore(
   { providedIn: "root" },
 
-  withState<{ movies: movie[] }>({
+  withState<{
+    movies: movie[],
+    currentPage: number,
+    totalPages: number
+  }>({
     movies: [],
+    currentPage: 1,
+    totalPages: 1
   }),
 
   withMethods((state) => {
     const http = inject(HttpClient);
+    const API_KEY = '2c2bef9d99b73c2a458dd29141f940d1';
 
     return {
-      loadPopularMovies: () => {
-        const API_KEY = '2c2bef9d99b73c2a458dd29141f940d1';
-        const url = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`;
-
+      loadNowPlaying: (page = 1) => {
+        const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&page=${page}`;
         http.get<any>(url).subscribe((res) => {
           patchState(state, {
             movies: res.results,
+            currentPage: res.page,
+            totalPages: res.total_pages
           });
+        });
+      },
 
-          console.log('Movies from TMDb:', res.results);
+      loadPopularMovies: () => {
+        const url = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`;
+        http.get<any>(url).subscribe((res) => {
+          patchState(state, { movies: res.results });
         });
       },
 
       searchMovies: (query: string) => {
-        const API_KEY = '2c2bef9d99b73c2a458dd29141f940d1';
         const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}`;
         http.get<any>(url).subscribe((res) => {
           patchState(state, { movies: res.results });
-          console.log("gfg",res.results)
         });
-        
       }
     };
   })
