@@ -38,5 +38,15 @@
         }@else {
         <p>no movies found</p>
         }
+
+        <ngb-pagination
+            [collectionSize]="store.totalPages()"
+            [page]="page()"
+            [pageSize]="1"
+            [maxSize]="5"
+            aria-label="Default pagination"
+            (pageChange)="onSearchPageChange($event)"
+            class="d-flex justify-content-center mt-4">
+        </ngb-pagination>
     </div>
 </section>

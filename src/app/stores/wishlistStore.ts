@@ -5,7 +5,10 @@ interface Movie {
   id: number,
   poster_path: string,
   title: string,
-  release_date: string
+  release_date: string,
+  overview: string,
+  vote_average: number,
+  vote_count: number
 }
 
 const stored = localStorage.getItem('wishlist');
@@ -14,32 +17,32 @@ const initialList: Movie[] = stored ? JSON.parse(stored) : [];
 export const wishlistStore = signalStore(
   { providedIn: 'root' },
 
-  withState<{ items: Movie[] }>({
-    items: initialList,
+  withState<{ movies: Movie[] }>({
+    movies: initialList,
   }),
 
   withComputed((state) => ({
-    count: computed(() => state.items().length),
+    count: computed(() => state.movies().length),
   })),
 
   withMethods((state) => ({
     add: (movie: Movie) => {
-      const exists = state.items().some((m) => m.id === movie.id);
+      const exists = state.movies().some((m) => m.id === movie.id);
       if (!exists) {
-        const updated = [...state.items(), movie];
-        patchState(state, { items: updated });
+        const updated = [...state.movies(), movie];
+        patchState(state, { movies: updated });
         localStorage.setItem('wishlist', JSON.stringify(updated));
       }
     },
 
     remove: (id: number) => {
-      const updated = state.items().filter((m) => m.id !== id);
-      patchState(state, { items: updated });
+      const updated = state.movies().filter((m) => m.id !== id);
+      patchState(state, { movies: updated });
       localStorage.setItem('wishlist', JSON.stringify(updated));
     },
 
     isInWishlist: (id: number): boolean => {
-      return state.items().some((m) => m.id === id);
+      return state.movies().some((m) => m.id === id);
     }
   }))
 );
