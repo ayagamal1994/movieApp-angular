@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { wishlistStore } from '../../stores/wishlistStore';
 
 @Component({
   selector: 'app-header',
@@ -12,5 +12,5 @@ import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './header.scss'
 })
 export class Header {
-
+  wishlistStore = inject(wishlistStore)
 }

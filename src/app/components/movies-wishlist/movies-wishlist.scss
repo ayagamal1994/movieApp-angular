@@ -25,6 +25,9 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    img {
+        cursor: pointer;
+    }
   }
   .release {
     color: #b5b5b5;

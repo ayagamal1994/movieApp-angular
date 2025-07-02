@@ -8,10 +8,11 @@ import {
 } from "@ngrx/signals";
 
 interface movie {
-  id: number;
-  poster_path: string;
-  title: string;
-  release_date: string;
+  id: number,
+  poster_path: string,
+  title: string,
+  release_date: string,
+  vote_average: number
 }
 
 export const moviesListStore = signalStore(

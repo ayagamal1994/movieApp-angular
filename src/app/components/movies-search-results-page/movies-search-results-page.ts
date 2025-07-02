@@ -4,10 +4,11 @@ import { moviesListStore } from '../../stores/moviesListStore';
 import { wishlistStore } from '../../stores/wishlistStore';
 import { FormsModule } from '@angular/forms';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-movies-search-results-page',
-  imports: [FormsModule, NgbPaginationModule],
+  imports: [FormsModule, NgbPaginationModule, CommonModule],
   templateUrl: './movies-search-results-page.html',
   styleUrl: './movies-search-results-page.scss'
 })
@@ -44,6 +45,9 @@ export class MoviesSearchResultsPage {
     }
   }
 
+  getVotePercent(movie: any): number {
+    return Math.round((movie.vote_average || 0 ) * 10 );
+  }
 
   toggleWishlist(movie: any) {
     this.wishlistStore.isInWishlist(movie.id)
