@@ -1,54 +1,78 @@
 <section class="wishlist mt-5">
-    <div class="container">
-        <div class="row">
-            @if(wishlistStore.count()>0){
-            @for(movie of wishlistStore.movies(); track movie.id){
-            <div class="col-lg-6 col-sm-12 mb-3">
-                <div class="wishlist__card mb-3 d-flex align-items-start gap-3">
-                    <div class="card-img">
-                        <img [src]="'https://image.tmdb.org/t/p/w500/' + movie.poster_path" alt="movie">
-                    </div>
-                    <div class="card-details">
-                        <div class="title d-flex justify-content-between align-items-center">
-                            <h3>{{movie.title}}</h3>
-                            <div>
-                                <img
-                                    class=""
-                                    [src]="wishlistStore.isInWishlist(movie.id) ? './heart-filled.png' : './heart-empty.png'"
-                                    (click)="toggleWishlist(movie)"
-                                    alt="wishlist icon"
-                                />
-                            </div>
-                        </div>
-                        
-                        <p class="release">{{movie.release_date}}</p>
-                        <div class="rate d-flex align-items-center gap-4">
-                            <div class="stars">
-                                <ngb-rating [rate]="movie.vote_average / 2" [readonly]="true" [max]="5" [starTemplate]="t" class="text-warning">
-                                </ngb-rating>
-                            
-                                <ng-template #t let-fill="fill">
-                                    <span class="star" [class.filled]="fill === 100">&#9733;</span> <!-- ★ -->
-                                </ng-template>
-                            </div>
-                            <div class="count">
-                                <p>{{movie.vote_count}}</p>
-                            </div>
-                        </div>
-                        <p class="overview">{{movie.overview}}</p>
-                    </div>
+  <div class="container">
+    @if(wishlistStore.count() > 0) {
+      <div class="row">
+        @if(moviesOnly().length>0){
+        <h3> Movies</h3>}
+        @for(movie of moviesOnly(); track movie.id) {
+          <div class="col-lg-6 col-sm-12 mb-3">
+            <div class="wishlist__card d-flex align-items-start gap-3">
+              <div class="card-img">
+                <img [src]="'https://image.tmdb.org/t/p/w500/' + movie.poster_path" alt="movie">
+              </div>
+              <div class="card-details">
+                <div class="title d-flex justify-content-between align-items-center">
+                  <h3>{{movie.title}}</h3>
+                  <img
+                    [src]="wishlistStore.isInWishlist(movie.id) ? './heart-filled.png' : './heart-empty.png'"
+                    (click)="toggleWishlist(movie)"
+                    alt="wishlist icon"
+                  />
                 </div>
+                <p class="release">{{movie.release_date}}</p>
+                <div class="rate d-flex align-items-center gap-4">
+                  <ngb-rating [rate]="movie.vote_average / 2" [readonly]="true" [max]="5" [starTemplate]="t" class="text-warning"></ngb-rating>
+                  <ng-template #t let-fill="fill">
+                    <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                  </ng-template>
+                  <p class="count">{{movie.vote_count}}</p>
+                </div>
+                <p class="overview">{{movie.overview}}</p>
+              </div>
             </div>
-            }
-            }@else{
-                <div class="no-wishlist d-flex justify-content-center align-items-center flex-column">
-                    <div class="img">
-                        <img src="./no-wishlist.png" alt="no wishlist">
-                    </div>
-                    <p>No Movies in watch list </p>
-                    <button>Back to home</button>
+          </div>
+        }
+
+        @if(tvOnly().length>0){
+        <h3 class="mt-5">TV Shows</h3>}
+        @for(tv of tvOnly(); track tv.id) {
+          <div class="col-lg-6 col-sm-12 mb-3">
+            <div class="wishlist__card d-flex align-items-start gap-3">
+              <div class="card-img">
+                <img [src]="'https://image.tmdb.org/t/p/w500/' + tv.poster_path" alt="tv">
+              </div>
+              <div class="card-details">
+                <div class="title d-flex justify-content-between align-items-center">
+                  <h3>{{tv.name}}</h3>
+                  <img
+                    [src]="wishlistStore.isInWishlist(tv.id) ? './heart-filled.png' : './heart-empty.png'"
+                    (click)="toggleWishlist(tv)"
+                    alt="wishlist icon"
+                  />
                 </div>
-            }
+                <p class="release">{{tv.first_air_date}}</p>
+                <div class="rate d-flex align-items-center gap-4">
+                  <ngb-rating [rate]="tv.vote_average / 2" [readonly]="true" [max]="5" [starTemplate]="t" class="text-warning"></ngb-rating>
+                  <ng-template #t let-fill="fill">
+                    <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                  </ng-template>
+                  <p class="count">{{tv.vote_count}}</p>
+                </div>
+                <p class="overview">{{tv.overview}}</p>
+              </div>
+            </div>
+          </div>
+        }
+
+      </div>
+    } @else {
+      <div class="no-wishlist d-flex justify-content-center align-items-center flex-column">
+        <div class="img">
+          <img src="./no-wishlist.png" alt="no wishlist">
         </div>
-    </div>
+        <p>No items in your wishlist.</p>
+        <button routerLink="/">Back to Home</button>
+      </div>
+    }
+  </div>
 </section>

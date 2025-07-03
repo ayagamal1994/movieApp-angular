@@ -1,48 +1,51 @@
 import { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';
 import { computed } from '@angular/core';
 
-interface Movie {
+interface WishItem {
   id: number,
   poster_path: string,
   title: string,
+  name: string,
+  first_air_date: string,
   release_date: string,
   overview: string,
   vote_average: number,
-  vote_count: number
+  vote_count: number,
+  media_type: "movie" | "tv"
 }
 
 const stored = localStorage.getItem('wishlist');
-const initialList: Movie[] = stored ? JSON.parse(stored) : [];
+const initialList: WishItem[] = stored ? JSON.parse(stored) : [];
 
 export const wishlistStore = signalStore(
   { providedIn: 'root' },
 
-  withState<{ movies: Movie[] }>({
-    movies: initialList,
+  withState<{ wishItems: WishItem[] }>({
+    wishItems: initialList,
   }),
 
   withComputed((state) => ({
-    count: computed(() => state.movies().length),
+    count: computed(() => state.wishItems().length),
   })),
 
   withMethods((state) => ({
-    add: (movie: Movie) => {
-      const exists = state.movies().some((m) => m.id === movie.id);
+    add: (movie: WishItem) => {
+      const exists = state.wishItems().some((m) => m.id === movie.id);
       if (!exists) {
-        const updated = [...state.movies(), movie];
-        patchState(state, { movies: updated });
+        const updated = [...state.wishItems(), movie];
+        patchState(state, { wishItems: updated });
         localStorage.setItem('wishlist', JSON.stringify(updated));
       }
     },
 
     remove: (id: number) => {
-      const updated = state.movies().filter((m) => m.id !== id);
-      patchState(state, { movies: updated });
+      const updated = state.wishItems().filter((m) => m.id !== id);
+      patchState(state, { wishItems: updated });
       localStorage.setItem('wishlist', JSON.stringify(updated));
     },
 
     isInWishlist: (id: number): boolean => {
-      return state.movies().some((m) => m.id === id);
+      return state.wishItems().some((m) => m.id === id);
     }
   }))
 );

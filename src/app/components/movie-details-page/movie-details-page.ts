@@ -24,10 +24,15 @@ export class MovieDetailsPage {
   }
 
   toggleWishlist(movie: any) {
-    this.wishlistStore.isInWishlist(movie.id)
-      ? this.wishlistStore.remove(movie.id)
-      : this.wishlistStore.add(movie);
+  if (this.wishlistStore.isInWishlist(movie.id)) {
+    this.wishlistStore.remove(movie.id);
+  } else {
+    this.wishlistStore.add({
+      ...movie,
+      media_type: 'movie'
+    });
   }
+}
 
   getVotePercent(movie: any): number {
     return Math.round((movie.vote_average || 0 ) * 10 );

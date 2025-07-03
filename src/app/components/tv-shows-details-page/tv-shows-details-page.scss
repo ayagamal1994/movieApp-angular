@@ -1,0 +1,78 @@
+.tv-details {
+    .card-img {
+        width: 25%;
+        img {
+            width: 100%;
+            border-radius: 15px
+        }
+    }
+    .card-details {
+        width: 74%;
+        .title {
+            img {
+                width: 20px;
+                cursor: pointer;
+            }
+        }
+        .release {
+            color: #959595;
+            font-size: 13px
+        }
+        p {
+            margin:0;
+        }
+        .count {
+            font-size: 12px
+        }
+        .overview {
+            margin: 20px 0;
+
+        }
+        .genres{
+            margin-bottom: 20px;
+            span {
+                background-color: #FFE353;
+                padding: 5px 20px;
+                border-radius: 10px;
+                margin-right: 10px;
+            }
+        }
+        .duration{
+            span {
+                font-weight: bold;
+                text-transform: capitalize;
+            }
+        }
+        .lang{
+            span {
+                font-weight: bold;
+                text-transform: capitalize;
+            }
+        }
+        .companies {
+            margin-top: 20px;
+            img {
+                height: 40px;
+
+                margin-right: 10px
+            }
+        }
+
+        .link {
+            padding: 5px 10px;
+            border-radius: 20px;
+            border: 1px solid #FFE353;
+            width: fit-content;
+            margin-top: 20px;
+            a {
+                text-decoration: none;
+                color: #000;
+                img {
+                    margin-left: 10px
+                }
+            }
+        }
+    }
+
+
+}

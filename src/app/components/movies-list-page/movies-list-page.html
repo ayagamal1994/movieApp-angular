@@ -39,7 +39,7 @@
                             <img
                                 class=""
                                 [src]="wishlistStore.isInWishlist(movie.id) ? './heart-filled.png' : './heart-empty.png'"
-                                (click)="toggleWishlist(movie)"
+                                (click)="toggleWishlist(movie); $event.stopPropagation()"
                                 alt="wishlist icon"
                             />
                         </div>

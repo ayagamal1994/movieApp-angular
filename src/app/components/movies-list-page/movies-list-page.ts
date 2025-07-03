@@ -1,10 +1,11 @@
 import { Component, effect, inject } from '@angular/core';
 import { moviesListStore } from '../../stores/moviesListStore';
 import { wishlistStore } from '../../stores/wishlistStore';
+import { languageStore } from '../../stores/languageStore';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-movies-list-page',
@@ -13,44 +14,58 @@ import { CommonModule } from '@angular/common';
   styleUrl: './movies-list-page.scss'
 })
 export class MoviesListPage {
-  //pagination
-  page = 1;
-  ngOnInit() {
-  this.page = this.moviesListStore.currentPage(); 
-  this.moviesListStore.loadNowPlaying(this.page); 
-}
-
-onPageChange(page: number) {
-  this.page = page;
-  this.moviesListStore.loadNowPlaying(page);
-}
-  //search
-  router = inject(Router)
-  searchTerm = "";
-  search(){
-    if(this.searchTerm.trim()){
-      this.router.navigate(['/search'], { queryParams: { q: this.searchTerm.trim() } });
-    }
-  }
-  //movies
   moviesListStore = inject(moviesListStore);
   wishlistStore = inject(wishlistStore);
+  langStore = inject(languageStore);
+  document = inject(DOCUMENT);
+  router = inject(Router);
 
+  searchTerm = "";
+  page = 1;
+
+  languages = ['en', 'ar', 'fr', 'zh'];
 
   constructor() {
     effect(() => {
-      this.moviesListStore.loadPopularMovies();
+      const lang = this.langStore.getLanguage();
+      const dir = lang === 'ar' ? 'rtl' : 'ltr';
+      this.document.documentElement.dir = dir;
+      this.moviesListStore.loadNowPlaying(this.page); // 🟢 يعيد التحميل عند تغيير اللغة
     });
   }
 
+  ngOnInit() {
+    this.page = this.moviesListStore.currentPage();
+    this.moviesListStore.loadNowPlaying(this.page);
+  }
+
+  onLanguageChange(lang: string) {
+    this.langStore.setLanguage(lang); // ✅ يغير اللغة و الاتجاه
+  }
+
+  onPageChange(page: number) {
+    this.page = page;
+    this.moviesListStore.loadNowPlaying(page);
+  }
+
+  search() {
+    if (this.searchTerm.trim()) {
+      this.router.navigate(['/search'], { queryParams: { q: this.searchTerm.trim() } });
+    }
+  }
+
   getVotePercent(movie: any): number {
-    return Math.round((movie.vote_average || 0 ) * 10 );
+    return Math.round((movie.vote_average || 0) * 10);
   }
 
   toggleWishlist(movie: any) {
-    this.wishlistStore.isInWishlist(movie.id)
-      ? this.wishlistStore.remove(movie.id)
-      : this.wishlistStore.add(movie);
+    if (this.wishlistStore.isInWishlist(movie.id)) {
+      this.wishlistStore.remove(movie.id);
+    } else {
+      this.wishlistStore.add({
+        ...movie,
+        media_type: 'movie'
+      });
+    }
   }
-
 }

@@ -1,6 +1,5 @@
 import { HttpClient } from "@angular/common/http";
 import { inject } from "@angular/core";
-import { languageStore } from "./languageStore";
 import {
   patchState,
   signalStore,
@@ -8,23 +7,23 @@ import {
   withState
 } from "@ngrx/signals";
 
-interface movie {
+interface tvShow {
   id: number,
   poster_path: string,
-  title: string,
-  release_date: string,
+  name: string,
+  first_air_date: string,
   vote_average: number
 }
 
-export const moviesListStore = signalStore(
+export const tvShowStore = signalStore(
   { providedIn: "root" },
 
   withState<{
-    movies: movie[],
+    tvShows: tvShow[],
     currentPage: number,
     totalPages: number
   }>({
-    movies: [],
+    tvShows: [],
     currentPage: 1,
     totalPages: 1
   }),
@@ -32,38 +31,34 @@ export const moviesListStore = signalStore(
   withMethods((state) => {
     const http = inject(HttpClient);
     const API_KEY = '2c2bef9d99b73c2a458dd29141f940d1';
-    const langStore = inject(languageStore);
-
 
     return {
       loadNowPlaying: (page = 1) => {
-        const lang = langStore.getLanguage(); 
-        const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=${lang}&page=${page}`;
+        const url = `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&page=${page}`;
         http.get<any>(url).subscribe((res) => {
           patchState(state, {
-            movies: res.results,
+            tvShows: res.results,
             currentPage: res.page,
             totalPages: res.total_pages,
           });
-          console.log(res.results)
         });
       },
 
       loadPopularMovies: () => {
-        const url = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`;
+        const url = `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}`;
         http.get<any>(url).subscribe((res) => {
-          patchState(state, { movies: res.results });
+          patchState(state, { tvShows: res.results });
           console.log("m", res.results)
         });
       },
 
       searchMovies: (query: string, page = 1) => {
         const API_KEY = '2c2bef9d99b73c2a458dd29141f940d1';
-        const url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&page=${page}`;
+        const url = ` https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&query=${query}&page=${page}`;
 
         http.get<any>(url).subscribe((res) => {
           patchState(state, {
-            movies: res.results,
+            tvShows: res.results,
             currentPage: res.page,
             totalPages: res.total_pages,
           });

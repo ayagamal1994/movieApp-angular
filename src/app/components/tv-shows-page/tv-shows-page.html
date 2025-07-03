@@ -1,1 +1,50 @@
-<p>tv-shows-page works!</p>
+<section class="tvshows-list">
+    <div class="container">
+        
+
+        <div class="row">
+        @for(tvShow of tvShowStore.tvShows(); track tvShow.id){
+            
+            <div class="col-lg-2 col-md-4 col-sm-12 mb-3">
+                <div class="tv-list__card mb-3" (click)="router.navigate(['/tvDetails', tvShow.id])">
+                    <div class="card-img">
+                        <img class="w-100 rounded-2" [src]="'https://image.tmdb.org/t/p/w500/' + tvShow.poster_path">
+                    </div>
+                    <div class="rate d-flex justify-content-center align-items-center" 
+                    [ngStyle]="{
+                        'background': 
+                        'conic-gradient(' +
+                        (getVotePercent(tvShow) >= 70 ? '#28a745' : getVotePercent(tvShow) >= 0 ? '#ffc107' : '#dc3545') +
+                        ' ' + getVotePercent(tvShow) + '%, #565555 ' + getVotePercent(tvShow) + '%)',
+                        'border-radius': '50%'
+                    }">
+                        <div class="circle">
+                            {{getVotePercent(tvShow)}}%
+                        </div>
+                        
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center"> 
+                        <div>
+                            <h3>{{tvShow.name}}</h3>
+                            <p>{{tvShow.first_air_date}}</p>
+                        </div>
+                        <div>
+                            <img
+                                class=""
+                                [src]="wishlistStore.isInWishlist(tvShow.id) ? './heart-filled.png' : './heart-empty.png'"
+                                (click)="toggleWishlist(tvShow); $event.stopPropagation()"
+                                alt="wishlist icon"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        }
+        </div>
+
+        <ngb-pagination [(page)]="page" [pageSize]="1" [collectionSize]="tvShowStore.totalPages()"  [maxSize]="5"  (pageChange)="onPageChange($event)"
+            aria-label="Default pagination" class="d-flex justify-content-center mt-4">
+        </ngb-pagination>
+    </div>
+</section>
