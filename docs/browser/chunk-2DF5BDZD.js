@@ -1,0 +1,1 @@
+import{p as n,q as r,r as o,s as a}from"./chunk-3EJWS4FH.js";var d=r({providedIn:"root"},a({lang:"en"}),o(t=>({setLanguage:e=>{n(t,{lang:e});let g=e==="ar"?"rtl":"ltr";document.documentElement.dir=g},getLanguage:()=>t.lang()})));export{d as a};

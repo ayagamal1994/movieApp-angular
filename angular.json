@@ -18,6 +18,9 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
+            "outputPath": "docs",
+            "index": "src/index.html",
+            "baseHref": "/movieApp-angular/",
             "polyfills": [
               "zone.js",
               "@angular/localize/init"
