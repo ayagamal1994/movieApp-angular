@@ -1,69 +1,126 @@
 <section class="movie-details">
     <div class="container">
-        <div class="row">
-            @if(movieDetailsStore.movie(); as movie){
+        <div class="movie">
+            <div class="row">
+                @if(movieDetailsStore.movie(); as movie){
                 <div class="col-sm-12 mb-3">
-                <div class="wishlist__card mb-3 d-flex align-items-start gap-3">
-                    <div class="card-img">
-                        <img [src]="'https://image.tmdb.org/t/p/w500/' + movie.poster_path" alt="movie">
-                    </div>
-                    <div class="card-details">
-                        <div class="title d-flex justify-content-between align-items-center">
-                            <h3>{{movie.title}}</h3>
-                            <div>
-                                <img
-                                    class=""
-                                    [src]="wishlistStore.isInWishlist(movie.id) ? './heart-filled.png' : './heart-empty.png'"
-                                    (click)="toggleWishlist(movie)"
-                                    alt="wishlist icon"
-                                />
-                            </div>
+                    <div class="wishlist__card mb-3 d-flex align-items-start gap-3">
+                        <div class="card-img">
+                            <img [src]="'https://image.tmdb.org/t/p/w500/' + movie.poster_path" alt="movie">
                         </div>
-                        
-                        <p class="release">{{movie.release_date}}</p>
-                        <div class="rate d-flex align-items-center gap-4">
-                            <div class="stars">
-                                <ngb-rating [rate]="movie.vote_average / 2" [readonly]="true" [max]="5" [starTemplate]="t" class="text-warning">
-                                </ngb-rating>
-                            
-                                <ng-template #t let-fill="fill">
-                                    <span class="star" [class.filled]="fill === 100">&#9733;</span> <!-- ★ -->
-                                </ng-template>
+                        <div class="card-details">
+                            <div class="title d-flex justify-content-between align-items-center">
+                                <h3>{{movie.title}}</h3>
+                                <div>
+                                    <img class=""
+                                        [src]="wishlistStore.isInWishlist(movie.id) ? './heart-filled.png' : './heart-empty.png'"
+                                        (click)="toggleWishlist(movie)" alt="wishlist icon" />
+                                </div>
                             </div>
-                            <div class="count">
-                                <p>{{movie.vote_count}}</p>
+
+                            <p class="release">{{movie.release_date}}</p>
+                            <div class="rate d-flex align-items-center gap-4">
+                                <div class="stars">
+                                    <ngb-rating [rate]="movie.vote_average / 2" [readonly]="true" [max]="5"
+                                        [starTemplate]="t" class="text-warning">
+                                    </ngb-rating>
+
+                                    <ng-template #t let-fill="fill">
+                                        <span class="star fs-3 " [class.filled]="fill === 100">&#9733;</span>
+                                    </ng-template>
+                                </div>
+                                <div class="count">
+                                    <p>{{movie.vote_count}}</p>
+                                </div>
                             </div>
-                        </div>
-                        <p class="overview">{{movie.overview}}</p>
-                        <div class="genres">
-                            @for(genre of movie.genres; track genre.id){
+                            <p class="overview">{{movie.overview}}</p>
+                            <div class="genres">
+                                @for(genre of movie.genres; track genre.id){
                                 <span>{{genre.name}}</span>
-                            }
-                        </div>
-                        <div class="d-flex align-items-center gap-5">
-                            <p class="duration"><span>duration: </span>{{movie.runtime}} Min.</p>
-                            <p class="lang"><span>languages: </span>
-                                @for(lang of movie.spoken_languages; track lang){
-                                    {{lang.english_name}}  
                                 }
-                            </p>
-                        </div>
-                        <div class="companies">
-                            
-                            @for(company of movie.production_companies; track company.id){
-                            @if (company.logo_path){
+                            </div>
+                            <div class="d-flex align-items-center gap-5">
+                                <p class="duration"><span>duration: </span>{{movie.runtime}} Min.</p>
+                                <p class="lang"><span>languages: </span>
+                                    @for(lang of movie.spoken_languages; track lang){
+                                    {{lang.english_name}}
+                                    }
+                                </p>
+                            </div>
+                            <div class="companies">
+
+                                @for(company of movie.production_companies; track company.id){
+                                @if (company.logo_path){
                                 <img [src]="'https://image.tmdb.org/t/p/w500/' + company.logo_path" alt="company">
-                            }
-                            }
+                                }
+                                }
+                            </div>
+                            <div class="link">
+                                <a [href]="movie.homepage">website <img src="./link.png" alt="link"></a>
+                            </div>
+
                         </div>
-                        <div class="link">
-                            <a [href]="movie.homepage">website <img src="./link.png" alt="link"></a>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+
+
+        <div class="reviews">
+            
+            @for(review of movieDetailsStore.reviews(); track review.id){
+            @if(review.author_details.avatar_path){
+            <h3>Reviews</h3>
+            <div class="user d-flex align-items-center">
+                <img [src]="'https://image.tmdb.org/t/p/w500/' + review.author_details.avatar_path" alt="author">
+                <p>{{review.author_details.name}}</p>
+            </div>
+            <p class="content">{{review.content}}</p>
+            }
+            }
+        
+        </div>
+
+        <div class="recommendation">
+            @if (movieDetailsStore.recommendations().length > 0) {
+            <h3>Recommendations</h3>
+        <div class="search-list row">
+            @for (recommendation of movieDetailsStore.recommendations(); track recommendation) {
+            @if (recommendation.poster_path){
+            <div class="col-lg-2 col-md-4 col-sm-12 mb-3">
+                <div class="item mb-3">
+                    <div class="card-img">
+                        <img class="w-100 rounded-2" [src]="'https://image.tmdb.org/t/p/w500/' + recommendation.poster_path">
+                    </div>
+                     <div class="rate d-flex justify-content-center align-items-center" 
+                    [ngStyle]="{
+                        'background': 
+                        'conic-gradient(' +
+                        (getVotePercent(recommendation) >= 70 ? '#28a745' : getVotePercent(recommendation) >= 0 ? '#ffc107' : '#dc3545') +
+                        ' ' + getVotePercent(recommendation) + '%, #565555 ' + getVotePercent(recommendation) + '%)',
+                        'border-radius': '50%'
+                    }">
+                        <div class="circle">
+                            {{getVotePercent(recommendation)}}%
                         </div>
                         
                     </div>
+                    <div class=" mt-2">
+                        <div>
+                            <h3 class="fs-6 fw-bold mb-1">{{ recommendation.title }}</h3>
+                            <p class="mb-0 text-muted">{{ recommendation.release_date }}</p>
+                        </div>
+
+    
+                    </div>
+
                 </div>
             </div>
             }
+            }
+        </div>
+    }
         </div>
     </div>
 </section>

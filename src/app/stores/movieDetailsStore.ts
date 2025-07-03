@@ -17,11 +17,31 @@ interface MovieDetails {
   homepage: string
 }
 
+interface Review {
+  id: number;
+  author_details: {name: string, avatar_path: string};
+  content: string;
+}
+
+interface Recommendation {
+  id: number;
+  title: string;
+  poster_path: string;
+  release_date: string
+}
+
 export const movieDetailsStore = signalStore(
   { providedIn: 'root' },
 
-  withState<{ movie: MovieDetails | null }>({
+  withState<{ 
+    movie: MovieDetails | null;
+    reviews: Review[];
+    recommendations: Recommendation[];
+
+   }>({
     movie: null,
+    reviews: [],
+    recommendations: []
   }),
 
   withMethods((state) => {
@@ -35,7 +55,25 @@ export const movieDetailsStore = signalStore(
           patchState(state, { movie: res });
           console.log(res)
         });
+
+        //reviews
+        const reviewsUrl = `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${apiKey}`;
+        http.get<any>(reviewsUrl).subscribe(res => {
+          patchState(state, { reviews: res.results });
+          console.log("rev", res.results)
+      });
+
+      //recommendations
+      const recsUrl = `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${apiKey}`;
+        http.get<any>(recsUrl).subscribe(res => {
+          patchState(state, { recommendations: res.results });
+          console.log("reco", res.results)
+        });
+
       }
+
+
+      
     };
   })
 );
