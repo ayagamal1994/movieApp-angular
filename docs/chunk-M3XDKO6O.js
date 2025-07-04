@@ -1,0 +1,1 @@
+import{l as n,m as r,n as o,o as a}from"./chunk-J2ZEPP2I.js";var d=r({providedIn:"root"},a({lang:"en"}),o(t=>({setLanguage:e=>{n(t,{lang:e});let g=e==="ar"?"rtl":"ltr";document.documentElement.dir=g},getLanguage:()=>t.lang()})));export{d as a};

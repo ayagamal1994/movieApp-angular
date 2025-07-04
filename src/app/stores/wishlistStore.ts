@@ -25,6 +25,7 @@ export const wishlistStore = signalStore(
   }),
 
   withComputed((state) => ({
+
     count: computed(() => state.wishItems().length),
   })),
 
