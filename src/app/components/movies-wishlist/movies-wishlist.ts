@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { wishlistStore } from '../../stores/wishlistStore';
 import { NgbRating } from '@ng-bootstrap/ng-bootstrap';
-
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-movies-wishlist',
-  imports: [NgbRating, ],
+  imports: [NgbRating, RouterModule],
   templateUrl: './movies-wishlist.html',
   styleUrl: './movies-wishlist.scss'
 })

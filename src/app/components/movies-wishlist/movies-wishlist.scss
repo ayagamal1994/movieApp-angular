@@ -65,11 +65,14 @@
     p {
         margin: 20px 0;
     }
-     button {
+     .back {
         width: fit-content;
         padding: 10px 50px;
         background-color: #FFE353;
         border: none;
         border-radius: 10px;
+        text-decoration: none;
+        color: #000;
+        cursor: pointer;
     }
 }
